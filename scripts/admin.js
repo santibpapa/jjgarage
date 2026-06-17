@@ -1,8 +1,5 @@
 /* ============================================================
    JJGARAGE — PANEL ADMINISTRADOR
-   Maneja: autenticación simple por contraseña, navegación de
-   tabs del dashboard, y los formularios CRUD para autos,
-   testimonios, "quiénes somos" y datos de contacto.
    ============================================================ */
 
 (() => {
@@ -29,9 +26,9 @@
   const loginClose = el('admin-login-close');
   const dashboard = el('admin-dashboard');
 
-  function openLogin() {
+  async function openLogin() {
     if (JJStore.hasSession()) {
-      openDashboard();
+      await openDashboard();
       return;
     }
     loginOverlay.classList.add('is-open');
@@ -46,11 +43,11 @@
     loginForm.reset();
   }
 
-  function openDashboard() {
+  async function openDashboard() {
     closeLogin();
     dashboard.classList.add('is-open');
     document.body.classList.add('no-scroll');
-    refreshAllPanels();
+    await refreshAllPanels();
   }
 
   function closeDashboard() {
@@ -58,18 +55,18 @@
     document.body.classList.remove('no-scroll');
   }
 
-  adminTrigger?.addEventListener('click', openLogin);
+  adminTrigger?.addEventListener('click', () => openLogin());
   loginClose?.addEventListener('click', closeLogin);
   loginOverlay?.addEventListener('click', (e) => {
     if (e.target === loginOverlay) closeLogin();
   });
 
-  loginForm?.addEventListener('submit', (e) => {
+  loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const password = qs('input[name="password"]', loginForm).value;
-    if (JJStore.checkPassword(password)) {
+    if (await JJStore.checkPassword(password)) {
       JJStore.setSession(true);
-      openDashboard();
+      await openDashboard();
     } else {
       loginError.classList.add('is-visible');
     }
@@ -81,7 +78,6 @@
   });
 
   el('admin-dashboard-close')?.addEventListener('click', closeDashboard);
-
   el('admin-view-site')?.addEventListener('click', closeDashboard);
 
   /* ================= TABS ================= */
@@ -97,14 +93,10 @@
     });
   });
 
-  function refreshAllPanels() {
-    renderCarsAdmin();
-    renderTestimonialsAdmin();
-    fillAboutForm();
-    fillSettingsForm();
+  async function refreshAllPanels() {
+    await Promise.all([renderCarsAdmin(), renderTestimonialsAdmin(), fillAboutForm(), fillSettingsForm()]);
   }
 
-  /* Escape key cierra modales/overlays abiertos */
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (carFormOverlay.classList.contains('is-open')) closeCarForm();
@@ -123,9 +115,9 @@
   let carImagesBuffer = [];
   let editingCarId = null;
 
-  function renderCarsAdmin() {
+  async function renderCarsAdmin() {
     const root = el('admin-cars-list');
-    const cars = JJStore.getCars();
+    const cars = await JJStore.getCars();
     if (cars.length === 0) {
       root.innerHTML = `<div class="admin-empty">No hay autos cargados todavía. Hacé clic en "Agregar auto" para crear el primero.</div>`;
       return;
@@ -154,25 +146,25 @@
       btn.addEventListener('click', () => openCarForm(btn.dataset.editCar));
     });
     qsa('[data-delete-car]', root).forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         if (confirm('¿Eliminar este auto del catálogo? Esta acción no se puede deshacer.')) {
-          JJStore.deleteCar(btn.dataset.deleteCar);
-          renderCarsAdmin();
-          JJRender.renderCars();
+          await JJStore.deleteCar(btn.dataset.deleteCar);
+          await renderCarsAdmin();
+          await JJRender.renderCars();
           showToast('Auto eliminado');
         }
       });
     });
   }
 
-  function openCarForm(carId) {
+  async function openCarForm(carId) {
     editingCarId = carId || null;
     carImagesBuffer = [];
     carForm.reset();
     carImagePreview.innerHTML = '';
 
     if (carId) {
-      const car = JJStore.getCar(carId);
+      const car = await JJStore.getCar(carId);
       carFormTitle.textContent = 'Editar auto';
       carForm.brand.value = car.brand || '';
       carForm.model.value = car.model || '';
@@ -209,7 +201,7 @@
     e.target.value = '';
     if (!files.length) return;
 
-    const { cloudinaryCloudName, cloudinaryUploadPreset } = JJStore.getSettings();
+    const { cloudinaryCloudName, cloudinaryUploadPreset } = await JJStore.getSettings();
 
     if (!cloudinaryCloudName || !cloudinaryUploadPreset) {
       showToast('Configurá Cloudinary en "Contacto y acceso" antes de subir fotos');
@@ -220,7 +212,6 @@
     uploadBtn.disabled = true;
     uploadBtn.textContent = `Subiendo fotos (0/${files.length})…`;
 
-    let done = 0;
     const uploadOne = async (file) => {
       const fd = new FormData();
       fd.append('file', file);
@@ -244,7 +235,7 @@
       }
     });
 
-    done = results.filter((r) => r.status === 'fulfilled').length;
+    const done = results.filter((r) => r.status === 'fulfilled').length;
     renderImagePreview();
     uploadBtn.disabled = false;
     uploadBtn.textContent = 'Guardar auto';
@@ -257,7 +248,7 @@
     if (e.target === carFormOverlay) closeCarForm();
   });
 
-  carForm?.addEventListener('submit', (e) => {
+  carForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const wasEditing = !!editingCarId;
     const data = {
@@ -273,12 +264,12 @@
       tag: carForm.tag.value.trim(),
       description: carForm.description.value.trim(),
       images: carImagesBuffer,
-      colorArt: editingCarId ? (JJStore.getCar(editingCarId)?.colorArt) : randomCarGradient(),
+      colorArt: editingCarId ? (await JJStore.getCar(editingCarId))?.colorArt : randomCarGradient(),
     };
-    JJStore.saveCar(data);
+    await JJStore.saveCar(data);
     closeCarForm();
-    renderCarsAdmin();
-    JJRender.renderCars();
+    await renderCarsAdmin();
+    await JJRender.renderCars();
     showToast(wasEditing ? 'Auto actualizado' : 'Auto agregado');
   });
 
@@ -316,9 +307,9 @@
     });
   }
 
-  function renderTestimonialsAdmin() {
+  async function renderTestimonialsAdmin() {
     const root = el('admin-testimonials-list');
-    const items = JJStore.getTestimonials();
+    const items = await JJStore.getTestimonials();
     if (items.length === 0) {
       root.innerHTML = `<div class="admin-empty">No hay testimonios todavía.</div>`;
       return;
@@ -340,24 +331,24 @@
       btn.addEventListener('click', () => openTestimonialForm(btn.dataset.editTestimonial));
     });
     qsa('[data-delete-testimonial]', root).forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         if (confirm('¿Eliminar este testimonio?')) {
-          JJStore.deleteTestimonial(btn.dataset.deleteTestimonial);
-          renderTestimonialsAdmin();
-          JJRender.renderTestimonials();
+          await JJStore.deleteTestimonial(btn.dataset.deleteTestimonial);
+          await renderTestimonialsAdmin();
+          await JJRender.renderTestimonials();
           showToast('Testimonio eliminado');
         }
       });
     });
   }
 
-  function openTestimonialForm(id) {
+  async function openTestimonialForm(id) {
     editingTestimonialId = id || null;
     testimonialForm.reset();
     currentRating = 5;
 
     if (id) {
-      const items = JJStore.getTestimonials();
+      const items = await JJStore.getTestimonials();
       const t = items.find((i) => i.id === id);
       testimonialFormTitle.textContent = 'Editar testimonio';
       testimonialForm.name.value = t.name;
@@ -382,7 +373,7 @@
     if (e.target === testimonialFormOverlay) closeTestimonialForm();
   });
 
-  testimonialForm?.addEventListener('submit', (e) => {
+  testimonialForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const wasEditing = !!editingTestimonialId;
     const data = {
@@ -392,10 +383,10 @@
       quote: testimonialForm.quote.value.trim(),
       rating: currentRating,
     };
-    JJStore.saveTestimonial(data);
+    await JJStore.saveTestimonial(data);
     closeTestimonialForm();
-    renderTestimonialsAdmin();
-    JJRender.renderTestimonials();
+    await renderTestimonialsAdmin();
+    await JJRender.renderTestimonials();
     showToast(wasEditing ? 'Testimonio actualizado' : 'Testimonio agregado');
   });
 
@@ -404,24 +395,24 @@
      ============================================================ */
   const aboutForm = el('about-form');
 
-  function fillAboutForm() {
+  async function fillAboutForm() {
     if (!aboutForm) return;
-    const about = JJStore.getAbout();
+    const about = await JJStore.getAbout();
     aboutForm.title.value = about.title || '';
     aboutForm.paragraph1.value = about.paragraph1 || '';
     aboutForm.paragraph2.value = about.paragraph2 || '';
     aboutForm.paragraph3.value = about.paragraph3 || '';
   }
 
-  aboutForm?.addEventListener('submit', (e) => {
+  aboutForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    JJStore.saveAbout({
+    await JJStore.saveAbout({
       title: aboutForm.title.value.trim(),
       paragraph1: aboutForm.paragraph1.value.trim(),
       paragraph2: aboutForm.paragraph2.value.trim(),
       paragraph3: aboutForm.paragraph3.value.trim(),
     });
-    JJRender.renderAbout();
+    await JJRender.renderAbout();
     showToast('Sección "Quiénes somos" actualizada');
   });
 
@@ -430,9 +421,9 @@
      ============================================================ */
   const settingsForm = el('settings-form');
 
-  function fillSettingsForm() {
+  async function fillSettingsForm() {
     if (!settingsForm) return;
-    const s = JJStore.getSettings();
+    const s = await JJStore.getSettings();
     settingsForm.whatsapp.value = s.whatsapp || '';
     settingsForm.email.value = s.email || '';
     settingsForm.instagram.value = s.instagram || '';
@@ -444,29 +435,29 @@
     }
   }
 
-  settingsForm?.addEventListener('submit', (e) => {
+  settingsForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    JJStore.saveSettings({
+    await JJStore.saveSettings({
       whatsapp: settingsForm.whatsapp.value.trim(),
       email: settingsForm.email.value.trim(),
       instagram: settingsForm.instagram.value.trim(),
       address: settingsForm.address.value.trim(),
     });
-    JJRender.renderSettings();
+    await JJRender.renderSettings();
     showToast('Datos de contacto actualizados');
   });
 
-  el('cloudinary-form')?.addEventListener('submit', (e) => {
+  el('cloudinary-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
-    JJStore.saveSettings({
+    await JJStore.saveSettings({
       cloudinaryCloudName: form.cloudinaryCloudName.value.trim(),
       cloudinaryUploadPreset: form.cloudinaryUploadPreset.value.trim(),
     });
     showToast('Configuración de Cloudinary guardada');
   });
 
-  el('password-form')?.addEventListener('submit', (e) => {
+  el('password-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const form = e.target;
     const newPass = form.newPassword.value.trim();
@@ -474,12 +465,12 @@
       showToast('La contraseña debe tener al menos 4 caracteres');
       return;
     }
-    JJStore.saveSettings({ adminPassword: newPass });
+    await JJStore.saveSettings({ adminPassword: newPass });
     form.reset();
     showToast('Contraseña actualizada');
   });
 
-  /* ================= ICONOS SVG REUTILIZABLES ================= */
+  /* ================= ICONOS SVG ================= */
   function editIconSVG() {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>`;
   }
@@ -492,7 +483,4 @@
   function userIconSVG() {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg>`;
   }
-
-  /* ---- Si ya hay sesión activa (volvió a entrar a la página), no forzamos re-login ---- */
-  // La sesión se guarda en sessionStorage y se limpia al cerrar la pestaña.
 })();

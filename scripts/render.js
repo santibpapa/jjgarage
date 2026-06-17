@@ -13,10 +13,10 @@
   const starSVG = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7L12 17.3 5.7 20.9l1.7-7L2 9.2l7.1-.6L12 2z"/></svg>`;
 
   /* ================= AUTOS ================= */
-  function renderCars() {
+  async function renderCars() {
     const root = document.getElementById('fleet-list');
     if (!root) return;
-    const cars = JJStore.getCars();
+    const cars = await JJStore.getCars();
     const counterEl = document.getElementById('fleet-counter-total');
     if (counterEl) counterEl.textContent = String(cars.length).padStart(2, '0');
 
@@ -68,7 +68,6 @@
       </article>`;
     }).join('');
 
-    /* Re-observar los nuevos elementos para scroll reveal */
     if (window.JJObserveNewReveals) window.JJObserveNewReveals();
   }
 
@@ -82,10 +81,10 @@
   }
 
   /* ================= TESTIMONIOS ================= */
-  function renderTestimonials() {
+  async function renderTestimonials() {
     const root = document.getElementById('testimonials-list');
     if (!root) return;
-    const items = JJStore.getTestimonials();
+    const items = await JJStore.getTestimonials();
 
     if (items.length === 0) {
       root.innerHTML = `<div class="admin-empty">Todavía no hay testimonios publicados.</div>`;
@@ -116,8 +115,8 @@
   }
 
   /* ================= QUIÉNES SOMOS ================= */
-  function renderAbout() {
-    const about = JJStore.getAbout();
+  async function renderAbout() {
+    const about = await JJStore.getAbout();
     const titleEl = document.getElementById('about-title');
     const p1 = document.getElementById('about-p1');
     const p2 = document.getElementById('about-p2');
@@ -129,8 +128,8 @@
   }
 
   /* ================= CONTACTO / SETTINGS ================= */
-  function renderSettings() {
-    const s = JJStore.getSettings();
+  async function renderSettings() {
+    const s = await JJStore.getSettings();
     document.querySelectorAll('[data-field="whatsapp"]').forEach((el) => {
       el.textContent = s.whatsapp;
     });
@@ -153,11 +152,8 @@
     }
   }
 
-  function renderAll() {
-    renderCars();
-    renderTestimonials();
-    renderAbout();
-    renderSettings();
+  async function renderAll() {
+    await Promise.all([renderCars(), renderTestimonials(), renderAbout(), renderSettings()]);
   }
 
   window.JJRender = { renderAll, renderCars, renderTestimonials, renderAbout, renderSettings };

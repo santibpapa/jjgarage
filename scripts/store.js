@@ -1,261 +1,176 @@
 /* ============================================================
-   JJGARAGE — DATA STORE
-   ------------------------------------------------------------
-   Esta capa simula una base de datos usando localStorage.
-   Está diseñada para que el día de mañana se pueda reemplazar
-   por llamadas a Supabase/Firebase SIN tocar el resto de la app:
-   solo hay que reimplementar los métodos de JJStore manteniendo
-   la misma firma (mismos nombres de función, mismos shapes de
-   datos entrando y saliendo).
-
-   Cómo migrar a Supabase (resumen):
-   1. Crear tablas: cars, testimonials, about_content (1 fila), settings.
-   2. Reemplazar cada método (get, save, delete) por un await a
-      supabase.from('tabla') con select(), insert(), update() o delete().
-   3. Mantener el resto del código (UI) intacto: todo consume
-      estos métodos, nunca accede a localStorage directamente.
+   JJGARAGE — DATA STORE (Supabase)
+   Reemplaza los valores de SUPABASE_URL y SUPABASE_ANON_KEY
+   con los de tu proyecto en supabase.com → Settings → API.
    ============================================================ */
 
 const JJStore = (() => {
-  const KEYS = {
-    cars: 'jjgarage_cars',
-    testimonials: 'jjgarage_testimonials',
-    about: 'jjgarage_about',
-    settings: 'jjgarage_settings',
-    auth: 'jjgarage_admin_auth',
-  };
+  const SUPABASE_URL = 'https://ojqdphlljouhfnjcpnry.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9qcWRwaGxsam91aGZuamNwbnJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MjIzNzEsImV4cCI6MjA5NzI5ODM3MX0.KEy_r83vokXp5xrc_pRtfR9v5tZaevV1ZozZtTcDel4';
 
-  /* ---- Datos semilla (ficticios) — se cargan solo la primera vez ---- */
-  const SEED_CARS = [
-    {
-      id: 'car-1',
-      brand: 'Porsche',
-      model: '911 Carrera S',
-      year: 2022,
-      price: 145000,
-      currency: 'USD',
-      mileage: '8.200 km',
-      transmission: 'Automática PDK',
-      fuel: 'Nafta',
-      description: 'Un ícono atemporal. Motor bóxer de 6 cilindros, suspensión adaptativa y un interior artesanal que redefine lo que significa manejar un deportivo todos los días.',
-      tag: 'Recién ingresado',
-      colorArt: 'linear-gradient(135deg, #3a2f1c, #0f0f0d)',
-      images: [],
-    },
-    {
-      id: 'car-2',
-      brand: 'Mercedes-Benz',
-      model: 'S 500 4MATIC',
-      year: 2021,
-      price: 98500,
-      currency: 'USD',
-      mileage: '21.400 km',
-      transmission: 'Automática 9G-Tronic',
-      fuel: 'Nafta',
-      description: 'La referencia mundial en confort ejecutivo. Equipamiento full, asientos con masaje y un sistema de sonido Burmester que transforma cada viaje en una experiencia.',
-      tag: 'Único dueño',
-      colorArt: 'linear-gradient(135deg, #1f1f24, #0a0a0c)',
-      images: [],
-    },
-    {
-      id: 'car-3',
-      brand: 'BMW',
-      model: 'M340i xDrive',
-      year: 2023,
-      price: 76900,
-      currency: 'USD',
-      mileage: '5.100 km',
-      transmission: 'Automática 8 vel.',
-      fuel: 'Nafta',
-      description: 'Deportividad alemana sin compromisos. Tracción integral, motor de 6 en línea y un equilibrio perfecto entre uso diario y pasión por la conducción.',
-      tag: 'Como nuevo',
-      colorArt: 'linear-gradient(135deg, #2a2a2e, #0c0c0e)',
-      images: [],
-    },
-  ];
-
-  const SEED_TESTIMONIALS = [
-    {
-      id: 't-1',
-      name: 'Martín Ferreyra',
-      detail: 'Compró un Porsche 911',
-      rating: 5,
-      quote: 'El proceso fue impecable de principio a fin. Me explicaron cada detalle del auto, la documentación estuvo lista antes de lo prometido y la atención fue cercana sin perder la formalidad.',
-    },
-    {
-      id: 't-2',
-      name: 'Lucía Santangelo',
-      detail: 'Vendió su Audi A4',
-      rating: 5,
-      quote: 'Tasaron mi auto en el momento y me pagaron al instante. Después de cotizar en varios lugares, JJGarage fue por lejos la opción más seria y transparente.',
-    },
-    {
-      id: 't-3',
-      name: 'Gonzalo Iturri',
-      detail: 'Compró un Mercedes-Benz Clase S',
-      rating: 5,
-      quote: 'Se nota que entienden de autos premium. La curaduría de la flota es excelente y el seguimiento post-venta superó lo que esperaba de una concesionaria boutique.',
-    },
-  ];
-
-  const SEED_ABOUT = {
-    title: 'Más de una década curando los autos que merecen una segunda historia',
-    paragraph1: 'JJGarage nació de una convicción simple: comprar o vender un auto premium no debería sentirse como una transacción, sino como un proceso a la altura del vehículo mismo.',
-    paragraph2: 'Trabajamos con una flota reducida y cuidadosamente seleccionada, porque preferimos la calidad sobre el volumen. Cada auto que pasa por nuestras manos es inspeccionado, documentado y preparado con el mismo estándar que esperaríamos para el nuestro.',
-    paragraph3: 'Nuestro equipo combina experiencia técnica con un trato cercano: te acompañamos en cada paso, desde la tasación inicial hasta la entrega de la documentación final, con total transparencia.',
-  };
-
-  const SEED_SETTINGS = {
-    whatsapp: '+54 9 11 5555-0123',
-    email: 'contacto@jjgarage.com.ar',
-    instagram: '@jjgarage.ar',
-    address: 'Av. Figueroa Alcorta 1234, CABA',
-    adminPassword: 'jjgarage2024',
-    cloudinaryCloudName: '',
-    cloudinaryUploadPreset: '',
-  };
-
-  function readJSON(key, fallback) {
-    try {
-      const raw = localStorage.getItem(key);
-      if (!raw) return fallback;
-      return JSON.parse(raw);
-    } catch (e) {
-      console.error('JJStore: error leyendo', key, e);
-      return fallback;
-    }
-  }
-
-  function writeJSON(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      return true;
-    } catch (e) {
-      console.error('JJStore: error guardando', key, e);
-      return false;
-    }
-  }
-
-  function init() {
-    if (!localStorage.getItem(KEYS.cars)) writeJSON(KEYS.cars, SEED_CARS);
-    if (!localStorage.getItem(KEYS.testimonials)) writeJSON(KEYS.testimonials, SEED_TESTIMONIALS);
-    if (!localStorage.getItem(KEYS.about)) writeJSON(KEYS.about, SEED_ABOUT);
-    if (!localStorage.getItem(KEYS.settings)) writeJSON(KEYS.settings, SEED_SETTINGS);
-  }
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   function uid(prefix) {
     return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
   }
 
+  /* ---- Mapeo cars: DB (snake_case) ↔ JS (camelCase) ---- */
+  function dbCarToJs(row) {
+    return {
+      id: row.id,
+      brand: row.brand,
+      model: row.model,
+      year: row.year,
+      price: row.price,
+      currency: row.currency,
+      mileage: row.mileage,
+      transmission: row.transmission,
+      fuel: row.fuel,
+      description: row.description,
+      tag: row.tag,
+      colorArt: row.color_art,
+      images: row.images || [],
+    };
+  }
+
+  function jsCarToDb(car) {
+    return {
+      id: car.id || uid('car'),
+      brand: car.brand,
+      model: car.model,
+      year: car.year,
+      price: car.price,
+      currency: car.currency,
+      mileage: car.mileage,
+      transmission: car.transmission,
+      fuel: car.fuel,
+      description: car.description,
+      tag: car.tag,
+      color_art: car.colorArt,
+      images: car.images || [],
+    };
+  }
+
+  /* ---- Mapeo settings: DB ↔ JS ---- */
+  function dbSettingsToJs(row) {
+    return {
+      whatsapp: row.whatsapp || '',
+      email: row.email || '',
+      instagram: row.instagram || '',
+      address: row.address || '',
+      adminPassword: row.admin_password || '',
+      cloudinaryCloudName: row.cloudinary_cloud_name || '',
+      cloudinaryUploadPreset: row.cloudinary_upload_preset || '',
+    };
+  }
+
+  function jsSettingsToDb(s) {
+    return {
+      id: 1,
+      whatsapp: s.whatsapp,
+      email: s.email,
+      instagram: s.instagram,
+      address: s.address,
+      admin_password: s.adminPassword,
+      cloudinary_cloud_name: s.cloudinaryCloudName,
+      cloudinary_upload_preset: s.cloudinaryUploadPreset,
+    };
+  }
+
   /* ================= CARS ================= */
-  function getCars() {
-    return readJSON(KEYS.cars, []);
+  async function getCars() {
+    const { data, error } = await sb.from('cars').select('*').order('created_at', { ascending: false });
+    if (error) { console.error('getCars:', error); return []; }
+    return data.map(dbCarToJs);
   }
 
-  function getCar(id) {
-    return getCars().find((c) => c.id === id) || null;
+  async function getCar(id) {
+    const { data, error } = await sb.from('cars').select('*').eq('id', id).single();
+    if (error) { console.error('getCar:', error); return null; }
+    return dbCarToJs(data);
   }
 
-  function saveCar(car) {
-    const cars = getCars();
-    if (car.id) {
-      const idx = cars.findIndex((c) => c.id === car.id);
-      if (idx >= 0) {
-        cars[idx] = { ...cars[idx], ...car };
-      } else {
-        cars.push(car);
-      }
-    } else {
-      car.id = uid('car');
-      cars.unshift(car);
-    }
-    writeJSON(KEYS.cars, cars);
-    return car;
+  async function saveCar(car) {
+    const row = jsCarToDb(car);
+    const { data, error } = await sb.from('cars').upsert(row).select().single();
+    if (error) { console.error('saveCar:', error); return null; }
+    return dbCarToJs(data);
   }
 
-  function deleteCar(id) {
-    const cars = getCars().filter((c) => c.id !== id);
-    writeJSON(KEYS.cars, cars);
+  async function deleteCar(id) {
+    const { error } = await sb.from('cars').delete().eq('id', id);
+    if (error) console.error('deleteCar:', error);
   }
 
   /* ================= TESTIMONIALS ================= */
-  function getTestimonials() {
-    return readJSON(KEYS.testimonials, []);
+  async function getTestimonials() {
+    const { data, error } = await sb.from('testimonials').select('*').order('created_at', { ascending: false });
+    if (error) { console.error('getTestimonials:', error); return []; }
+    return data;
   }
 
-  function saveTestimonial(t) {
-    const items = getTestimonials();
-    if (t.id) {
-      const idx = items.findIndex((i) => i.id === t.id);
-      if (idx >= 0) items[idx] = { ...items[idx], ...t };
-      else items.push(t);
-    } else {
-      t.id = uid('t');
-      items.unshift(t);
-    }
-    writeJSON(KEYS.testimonials, items);
-    return t;
+  async function saveTestimonial(t) {
+    const row = { ...t };
+    if (!row.id) row.id = uid('t');
+    const { data, error } = await sb.from('testimonials').upsert(row).select().single();
+    if (error) { console.error('saveTestimonial:', error); return null; }
+    return data;
   }
 
-  function deleteTestimonial(id) {
-    const items = getTestimonials().filter((i) => i.id !== id);
-    writeJSON(KEYS.testimonials, items);
+  async function deleteTestimonial(id) {
+    const { error } = await sb.from('testimonials').delete().eq('id', id);
+    if (error) console.error('deleteTestimonial:', error);
   }
 
   /* ================= ABOUT ================= */
-  function getAbout() {
-    return readJSON(KEYS.about, SEED_ABOUT);
+  async function getAbout() {
+    const { data, error } = await sb.from('about').select('*').eq('id', 1).single();
+    if (error) { console.error('getAbout:', error); return {}; }
+    return data;
   }
 
-  function saveAbout(data) {
-    writeJSON(KEYS.about, data);
+  async function saveAbout(about) {
+    const { data, error } = await sb.from('about').upsert({ id: 1, ...about }).select().single();
+    if (error) { console.error('saveAbout:', error); return null; }
     return data;
   }
 
   /* ================= SETTINGS ================= */
-  function getSettings() {
-    return readJSON(KEYS.settings, SEED_SETTINGS);
+  async function getSettings() {
+    const { data, error } = await sb.from('settings').select('*').eq('id', 1).single();
+    if (error) { console.error('getSettings:', error); return {}; }
+    return dbSettingsToJs(data);
   }
 
-  function saveSettings(data) {
-    const current = getSettings();
-    const merged = { ...current, ...data };
-    writeJSON(KEYS.settings, merged);
-    return merged;
+  async function saveSettings(partial) {
+    const current = await getSettings();
+    const merged = { ...current, ...partial };
+    const row = jsSettingsToDb(merged);
+    const { data, error } = await sb.from('settings').upsert(row).select().single();
+    if (error) { console.error('saveSettings:', error); return null; }
+    return dbSettingsToJs(data);
   }
 
   /* ================= AUTH ================= */
-  function checkPassword(password) {
-    const settings = getSettings();
-    return password === settings.adminPassword;
+  async function checkPassword(password) {
+    const s = await getSettings();
+    return password === s.adminPassword;
   }
 
   function setSession(isActive) {
-    if (isActive) sessionStorage.setItem(KEYS.auth, '1');
-    else sessionStorage.removeItem(KEYS.auth);
+    if (isActive) sessionStorage.setItem('jjgarage_admin_auth', '1');
+    else sessionStorage.removeItem('jjgarage_admin_auth');
   }
 
   function hasSession() {
-    return sessionStorage.getItem(KEYS.auth) === '1';
-  }
-
-  /* ================= UTILS ================= */
-  function resetAllData() {
-    writeJSON(KEYS.cars, SEED_CARS);
-    writeJSON(KEYS.testimonials, SEED_TESTIMONIALS);
-    writeJSON(KEYS.about, SEED_ABOUT);
-    writeJSON(KEYS.settings, SEED_SETTINGS);
+    return sessionStorage.getItem('jjgarage_admin_auth') === '1';
   }
 
   return {
-    init,
     getCars, getCar, saveCar, deleteCar,
     getTestimonials, saveTestimonial, deleteTestimonial,
     getAbout, saveAbout,
     getSettings, saveSettings,
     checkPassword, setSession, hasSession,
-    resetAllData,
   };
 })();
-
-JJStore.init();
