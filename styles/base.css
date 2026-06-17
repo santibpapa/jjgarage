@@ -32,6 +32,18 @@ body {
   overflow-x: hidden;
 }
 
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%, rgba(201, 162, 75, 0.18), transparent 55%),
+    radial-gradient(ellipse 55% 55% at 95% 100%, rgba(201, 162, 75, 0.12), transparent 55%);
+  pointer-events: none;
+  z-index: 500;
+  mix-blend-mode: screen;
+}
+
 body.no-scroll {
   overflow: hidden;
 }
