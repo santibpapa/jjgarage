@@ -1,0 +1,139 @@
+/* ============================================================
+   SECCIÓN "QUIÉNES SOMOS" + ESTADÍSTICAS
+   ============================================================ */
+
+.about-section {
+  background: var(--color-bg-elevated);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.about-text p {
+  color: var(--color-fg-muted);
+  font-size: 1.02rem;
+  line-height: 1.8;
+  margin-bottom: 1.3rem;
+  max-width: 52ch;
+}
+
+.about-text p:first-of-type {
+  color: var(--color-fg);
+  font-size: var(--fs-lead);
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.about-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.pillar {
+  display: flex;
+  gap: 1.1rem;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pillar:last-child { border-bottom: none; padding-bottom: 0; }
+
+.pillar-icon {
+  flex-shrink: 0;
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  background: var(--color-gold-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gold);
+}
+
+.pillar-icon svg { width: 22px; height: 22px; }
+
+.pillar h4 {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-bottom: 0.3rem;
+}
+
+.pillar p {
+  font-size: 0.9rem;
+  color: var(--color-fg-muted);
+}
+
+/* ---- Stats band ---- */
+.stats-band {
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+  padding-top: clamp(3rem, 7vw, 5.5rem);
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-weight: 600;
+  color: var(--color-fg);
+  line-height: 1;
+}
+
+.stat-number .gold { color: var(--color-gold-bright); }
+
+.stat-label {
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .stats-band { grid-template-columns: repeat(2, 1fr); gap: 2.2rem 1rem; }
+}
+
+/* ============================================================
+   BADGES DE CONFIANZA
+   ============================================================ */
+
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.4rem;
+}
+
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: rgba(255,255,255,0.02);
+  font-size: 0.8rem;
+  color: var(--color-fg-muted);
+}
+
+.trust-badge svg {
+  width: 16px; height: 16px;
+  color: var(--color-gold);
+  flex-shrink: 0;
+}

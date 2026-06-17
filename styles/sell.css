@@ -1,0 +1,112 @@
+/* ============================================================
+   SECCIÓN "VENDÉ TU AUTO"
+   ============================================================ */
+
+.sell-section {
+  background: var(--color-bg-elevated);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sell-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+}
+
+.sell-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sell-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.4rem;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sell-step:first-child { padding-top: 0; }
+.sell-step:last-child { border-bottom: none; }
+
+.sell-step-marker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  padding-top: 0.2rem;
+}
+
+.sell-step h3 {
+  font-size: 1.15rem;
+  color: var(--color-fg);
+  margin-bottom: 0.4rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+.sell-step p {
+  color: var(--color-fg-muted);
+  font-size: 0.95rem;
+  max-width: 46ch;
+}
+
+.sell-visual,
+.sell-form {
+  position: relative;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-strong);
+  background: linear-gradient(155deg, var(--color-surface), var(--color-bg));
+  padding: clamp(1.8rem, 3vw, 2.6rem);
+  overflow: hidden;
+}
+
+.sell-visual::before,
+.sell-form::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -30%;
+  width: 70%; height: 70%;
+  background: radial-gradient(circle, rgba(201,162,75,0.18), transparent 70%);
+  pointer-events: none;
+}
+
+.sell-form .field,
+.sell-form .form-row {
+  position: relative;
+  z-index: 1;
+}
+
+.sell-form input[type="file"] {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-fg-muted);
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+}
+
+.sell-form input[type="file"]::-webkit-file-upload-button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.82rem;
+  color: var(--color-bg);
+  background: var(--color-gold);
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  margin-right: 0.9rem;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .sell-grid {
+    grid-template-columns: 1fr;
+  }
+  .sell-visual, .sell-form { order: -1; }
+}

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JJGarage — Compra y venta de autos premium</title>
+<meta name="description" content="JJGarage: compra y venta de autos premium con tasación inmediata, gestión simple y total transparencia." />
+
+<!-- Tipografías: Fraunces (display, con carácter editorial) + Inter (cuerpo, alta legibilidad) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Estilos: orden importa (tokens primero, luego base, luego componentes) -->
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/navbar.css">
+<link rel="stylesheet" href="styles/hero.css">
+<link rel="stylesheet" href="styles/sell.css">
+<link rel="stylesheet" href="styles/fleet.css">
+<link rel="stylesheet" href="styles/about.css">
+<link rel="stylesheet" href="styles/testimonials.css">
+<link rel="stylesheet" href="styles/contact-footer.css">
+<link rel="stylesheet" href="styles/admin.css">
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header class="navbar">
+  <div class="container navbar-inner">
+    <a href="#inicio" class="brand">
+      <span class="brand-mark">JJ</span>
+      JJGarage
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#flota">Autos en venta</a></li>
+      <li><a href="#vender">Vendé tu auto</a></li>
+      <li><a href="#nosotros">Quiénes somos</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="#contacto" class="nav-cta">Reservar turno</a>
+      <button class="admin-trigger" id="admin-trigger" aria-label="Acceso administrador" title="Acceso administrador">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg">
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-bg-shape"></div>
+  </div>
+
+  <div class="hero-content">
+    <span class="hero-badge"><span class="dot"></span> Concesionaria boutique · Buenos Aires</span>
+    <h1>El auto que buscás, <em>la confianza</em> que merecés</h1>
+    <p class="hero-subtitle">Compra y venta de autos premium con tasación inmediata, curaduría exigente y un proceso transparente de principio a fin.</p>
+
+    <div class="hero-actions">
+      <a href="#flota" class="btn btn-primary">Ver autos en venta</a>
+      <a href="#vender" class="btn btn-secondary">Quiero vender mi auto</a>
+    </div>
+
+    <div class="hero-trust">
+      <div class="hero-trust-item">
+        <div class="num"><span class="gold">+</span>500</div>
+        <div class="label">Operaciones</div>
+      </div>
+      <div class="hero-trust-item">
+        <div class="num">98<span class="gold">%</span></div>
+        <div class="label">Clientes satisfechos</div>
+      </div>
+      <div class="hero-trust-item">
+        <div class="num">12</div>
+        <div class="label">Años de trayectoria</div>
+      </div>
+      <div class="hero-trust-item">
+        <div class="num"><span class="gold">24</span>h</div>
+        <div class="label">Tasación garantizada</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll-cue">
+    <span>Descubrí más</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============================================================
+     AUTOS EN VENTA
+     ============================================================ -->
+<section class="section fleet-section" id="flota">
+  <div class="container fleet-intro">
+    <div class="section-head reveal">
+      <div class="eyebrow">Autos en venta</div>
+      <h2>Una flota reducida, elegida con criterio</h2>
+      <p>Cada unidad pasa por una inspección exhaustiva antes de sumarse a nuestro catálogo. Esto es lo que tenemos disponible hoy.</p>
+      <div class="fleet-counter"><span class="current" id="fleet-counter-total">00</span> unidades disponibles</div>
+    </div>
+  </div>
+
+  <div id="fleet-list"><!-- Renderizado dinámicamente por render.js desde JJStore --></div>
+</section>
+
+<!-- ============================================================
+     VENDÉ TU AUTO
+     ============================================================ -->
+<section class="section sell-section" id="vender">
+  <div class="container">
+    <div class="sell-grid">
+
+      <div>
+        <div class="eyebrow reveal">Vendé tu auto</div>
+        <h2 class="reveal" style="font-size:var(--fs-h2); margin-bottom:1.5rem; max-width:16ch;">Tu auto, tasado y pagado en tiempo récord</h2>
+        <p class="reveal" style="color:var(--color-fg-muted); font-size:var(--fs-lead); margin-bottom:2.5rem; max-width:46ch;">Sin vueltas, sin intermediarios eternos. Te acompañamos en cada paso con un proceso pensado para que vendas con la misma confianza con la que compraste.</p>
+
+        <div class="sell-steps reveal-stagger">
+          <div class="sell-step">
+            <div class="sell-step-marker">01</div>
+            <div>
+              <h3>Tasación rápida</h3>
+              <p>Evaluamos tu vehículo en el día, con criterios claros y una cotización que respeta el valor real de mercado.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <div class="sell-step-marker">02</div>
+            <div>
+              <h3>Compra inmediata</h3>
+              <p>Si aceptás la propuesta, cerramos la operación al instante: nada de esperas indefinidas ni promesas vacías.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <div class="sell-step-marker">03</div>
+            <div>
+              <h3>Gestión simple</h3>
+              <p>Nos encargamos de la documentación y los trámites de transferencia para que vos no tengas que lidiar con eso.</p>
+            </div>
+          </div>
+          <div class="sell-step">
+            <div class="sell-step-marker">04</div>
+            <div>
+              <h3>Seguridad en la operación</h3>
+              <p>Pagos verificados, contratos claros y un equipo disponible para resolver cualquier duda antes, durante y después.</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#contacto" class="btn btn-primary reveal" style="margin-top:2.2rem;">Quiero tasar mi auto</a>
+      </div>
+
+      <form class="sell-form reveal" id="sell-form">
+        <div class="eyebrow" style="margin-bottom:1.2rem;">Contanos sobre tu auto</div>
+        <div class="field">
+          <label for="sf-vehicle">Vehículo</label>
+          <input id="sf-vehicle" name="vehicle" type="text" placeholder="Ej: Volkswagen Vento GLI" required>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="sf-year">Año</label>
+            <input id="sf-year" name="year" type="number" placeholder="2020" min="1990" max="2026" required>
+          </div>
+          <div class="field">
+            <label for="sf-km">Kilometraje</label>
+            <input id="sf-km" name="km" type="text" placeholder="Ej: 42.000 km" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="sf-description">Descripción</label>
+          <textarea id="sf-description" name="description" placeholder="Contanos el estado general, equipamiento, service, lo que creas importante..."></textarea>
+        </div>
+        <div class="field">
+          <label for="sf-images">Fotos del vehículo</label>
+          <input id="sf-images" name="images" type="file" accept="image/*" multiple>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Enviar para tasación</button>
+        <div class="form-success" id="sell-form-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>¡Gracias! Recibimos los datos de tu auto y te vamos a contactar a la brevedad.</span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUIÉNES SOMOS
+     ============================================================ -->
+<section class="section about-section" id="nosotros">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="eyebrow">Quiénes somos</div>
+        <h2 id="about-title" style="font-size: var(--fs-h2); margin-bottom: 1.6rem; max-width: 18ch;">Cargando...</h2>
+        <p id="about-p1"></p>
+        <p id="about-p2"></p>
+        <p id="about-p3"></p>
+
+        <div class="trust-badges">
+          <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/></svg> Verificación de procedencia</span>
+          <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg> Garantía de transparencia</span>
+          <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-9-9.5C1.5 7 4 4 7 4c2 0 4 1.5 5 3 1-1.5 3-3 5-3 3 0 5.5 3 4 7.5C19 16.5 12 21 12 21z"/></svg> Atención personalizada</span>
+        </div>
+      </div>
+
+      <div class="reveal-stagger">
+        <div class="about-pillars">
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13"/><rect x="3" y="13" width="18" height="5" rx="1.5"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="16.5" cy="18" r="1.5"/></svg></div>
+            <div>
+              <h4>Curaduría exigente</h4>
+              <p>Preferimos una flota chica e impecable antes que un volumen difícil de garantizar.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div>
+              <h4>Transparencia total</h4>
+              <p>Toda la información del vehículo, su historial y su documentación, disponible desde el primer contacto.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/></svg></div>
+            <div>
+              <h4>Trato cercano</h4>
+              <p>Un mismo asesor te acompaña de punta a punta, sin pases de mano ni respuestas automáticas.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-band">
+          <div class="stat-item">
+            <div class="stat-number"><span data-counter="500" data-suffix="+">0</span></div>
+            <div class="stat-label">Operaciones realizadas</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number"><span class="gold"><span data-counter="98" data-suffix="%">0</span></span></div>
+            <div class="stat-label">Clientes satisfechos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number"><span data-counter="12">0</span></div>
+            <div class="stat-label">Años en el mercado</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number"><span data-counter="24" data-suffix="h">0</span></div>
+            <div class="stat-label">Tasación garantizada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIOS
+     ============================================================ -->
+<section class="section testimonials-section" id="testimonios">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Testimonios</div>
+      <h2>Lo que dicen quienes ya confiaron en nosotros</h2>
+      <p>Historias reales de personas que compraron o vendieron su auto con JJGarage.</p>
+    </div>
+
+    <div class="testimonials-track" id="testimonials-list"><!-- Renderizado dinámicamente --></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACTO
+     ============================================================ -->
+<section class="section contact-section" id="contacto">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Contacto</div>
+      <h2>Hablemos de tu próximo auto</h2>
+      <p>Escribinos por el canal que prefieras. Te respondemos a la brevedad.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-channels">
+          <a href="#" id="contact-whatsapp-link" class="contact-channel">
+            <div class="contact-channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            <div class="contact-channel-text">
+              <div class="lbl">WhatsApp</div>
+              <div class="val" data-field="whatsapp">Cargando...</div>
+            </div>
+          </a>
+          <a href="#" id="contact-email-link" class="contact-channel">
+            <div class="contact-channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg></div>
+            <div class="contact-channel-text">
+              <div class="lbl">Email</div>
+              <div class="val" data-field="email">Cargando...</div>
+            </div>
+          </a>
+          <div class="contact-channel">
+            <div class="contact-channel-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div class="contact-channel-text">
+              <div class="lbl">Mostrador</div>
+              <div class="val" data-field="address">Cargando...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-link" aria-label="Instagram" id="contact-instagram-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9v12M10 13a4 4 0 0 1 8 0v8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form reveal" id="contact-form">
+        <div class="form-row">
+          <div class="field">
+            <label for="cf-name">Nombre</label>
+            <input id="cf-name" name="name" type="text" placeholder="Tu nombre" required>
+          </div>
+          <div class="field">
+            <label for="cf-phone">Teléfono</label>
+            <input id="cf-phone" name="phone" type="tel" placeholder="11 5555-0123">
+          </div>
+        </div>
+        <div class="field">
+          <label for="cf-email">Email</label>
+          <input id="cf-email" name="email" type="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="field">
+          <label for="cf-interest">Me interesa</label>
+          <select id="cf-interest" name="interest">
+            <option value="comprar">Comprar un auto</option>
+            <option value="vender">Vender mi auto</option>
+            <option value="otro">Otra consulta</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cf-message">Mensaje</label>
+          <textarea id="cf-message" name="message" placeholder="Contanos qué estás buscando..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Enviar consulta</button>
+        <div class="form-success" id="form-success">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>¡Gracias! Recibimos tu consulta y te vamos a contactar a la brevedad.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand"><span class="brand-mark">JJ</span> JJGarage</div>
+        <p>Compra y venta de autos premium en Buenos Aires. Confianza, transparencia y trato cercano en cada operación.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>Navegación</h5>
+          <a href="#flota">Autos en venta</a>
+          <a href="#vender">Vendé tu auto</a>
+          <a href="#nosotros">Quiénes somos</a>
+          <a href="#testimonios">Testimonios</a>
+        </div>
+        <div class="footer-col">
+          <h5>Contacto</h5>
+          <span data-field="whatsapp">Cargando...</span>
+          <span data-field="email">Cargando...</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-current-year></span> JJGarage. Todos los derechos reservados.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     MODAL: LOGIN ADMINISTRADOR
+     ============================================================ -->
+<div class="admin-overlay" id="admin-login-overlay">
+  <div class="admin-login-modal">
+    <button class="admin-close" id="admin-login-close" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="admin-login-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0 1 10 0v3"/></svg>
+    </div>
+    <h3>Acceso administrador</h3>
+    <p class="sub">Ingresá la contraseña para gestionar el contenido del sitio</p>
+    <form id="admin-login-form">
+      <div class="field">
+        <label for="admin-password">Contraseña</label>
+        <input id="admin-password" name="password" type="password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+      <p class="admin-login-error" id="admin-login-error">Contraseña incorrecta. Intentá de nuevo.</p>
+    </form>
+    <div class="admin-hint">Prototipo de demostración. Contraseña por defecto: <code>jjgarage2024</code></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DASHBOARD ADMINISTRADOR
+     ============================================================ -->
+<div class="admin-dashboard" id="admin-dashboard">
+  <div class="admin-topbar">
+    <div class="admin-topbar-brand">
+      <span class="brand-mark">JJ</span> Panel administrador
+      <span class="tag">Demo</span>
+    </div>
+    <div class="admin-topbar-actions">
+      <button class="btn btn-secondary" id="admin-view-site">Ver sitio</button>
+      <button class="btn btn-ghost" id="admin-logout">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <div class="admin-tabs">
+      <button class="admin-tab is-active" data-target="panel-cars">Autos</button>
+      <button class="admin-tab" data-target="panel-testimonials">Testimonios</button>
+      <button class="admin-tab" data-target="panel-about">Quiénes somos</button>
+      <button class="admin-tab" data-target="panel-settings">Contacto y acceso</button>
+    </div>
+
+    <!-- ---- Panel: Autos ---- -->
+    <div class="admin-panel is-active" id="panel-cars">
+      <div class="admin-panel-head">
+        <div>
+          <h2>Gestión de autos</h2>
+          <p>Creá, editá o eliminá las unidades visibles en "Autos en venta".</p>
+        </div>
+        <button class="btn btn-primary" id="car-form-add">+ Agregar auto</button>
+      </div>
+      <div class="admin-item-list" id="admin-cars-list"></div>
+    </div>
+
+    <!-- ---- Panel: Testimonios ---- -->
+    <div class="admin-panel" id="panel-testimonials">
+      <div class="admin-panel-head">
+        <div>
+          <h2>Gestión de testimonios</h2>
+          <p>Administrá los comentarios de clientes que se muestran en la web.</p>
+        </div>
+        <button class="btn btn-primary" id="testimonial-form-add">+ Agregar testimonio</button>
+      </div>
+      <div class="admin-item-list" id="admin-testimonials-list"></div>
+    </div>
+
+    <!-- ---- Panel: Quiénes somos ---- -->
+    <div class="admin-panel" id="panel-about">
+      <div class="admin-panel-head">
+        <div>
+          <h2>Editar "Quiénes somos"</h2>
+          <p>Este contenido se refleja directamente en la sección pública.</p>
+        </div>
+      </div>
+      <form id="about-form" style="max-width:640px;">
+        <div class="field">
+          <label for="about-f-title">Título</label>
+          <input id="about-f-title" name="title" type="text" required>
+        </div>
+        <div class="field">
+          <label for="about-f-p1">Párrafo introductorio</label>
+          <textarea id="about-f-p1" name="paragraph1" required></textarea>
+        </div>
+        <div class="field">
+          <label for="about-f-p2">Segundo párrafo</label>
+          <textarea id="about-f-p2" name="paragraph2" required></textarea>
+        </div>
+        <div class="field">
+          <label for="about-f-p3">Tercer párrafo</label>
+          <textarea id="about-f-p3" name="paragraph3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </form>
+    </div>
+
+    <!-- ---- Panel: Contacto y acceso ---- -->
+    <div class="admin-panel" id="panel-settings">
+      <div class="admin-panel-head">
+        <div>
+          <h2>Contacto y acceso</h2>
+          <p>Datos de contacto públicos y contraseña del panel.</p>
+        </div>
+      </div>
+
+      <form id="settings-form" style="max-width:640px; margin-bottom:2.5rem;">
+        <div class="field">
+          <label for="set-whatsapp">WhatsApp</label>
+          <input id="set-whatsapp" name="whatsapp" type="text" placeholder="+54 9 11 5555-0123">
+        </div>
+        <div class="field">
+          <label for="set-email">Email</label>
+          <input id="set-email" name="email" type="email" placeholder="contacto@jjgarage.com.ar">
+        </div>
+        <div class="field">
+          <label for="set-instagram">Instagram</label>
+          <input id="set-instagram" name="instagram" type="text" placeholder="@jjgarage.ar">
+        </div>
+        <div class="field">
+          <label for="set-address">Dirección del mostrador</label>
+          <input id="set-address" name="address" type="text" placeholder="Av. Ejemplo 1234, CABA">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar datos de contacto</button>
+      </form>
+
+      <form id="cloudinary-form" style="max-width:640px; margin-bottom:2.5rem;">
+        <h3 style="font-size:1rem; margin-bottom:0.4rem; color:var(--color-fg);">Cloudinary — almacenamiento de imágenes</h3>
+        <p style="font-size:0.85rem; color:var(--color-fg-muted); margin-bottom:1.2rem;">Creá una cuenta gratuita en cloudinary.com, copiá tu <strong>Cloud Name</strong> y creá un <strong>Upload Preset sin firma</strong> (Settings → Upload → Add upload preset → Unsigned).</p>
+        <div class="field">
+          <label for="set-cloudinary-cloud">Cloud Name</label>
+          <input id="set-cloudinary-cloud" name="cloudinaryCloudName" type="text" placeholder="Ej: mi-cloud-name">
+        </div>
+        <div class="field">
+          <label for="set-cloudinary-preset">Upload Preset (unsigned)</label>
+          <input id="set-cloudinary-preset" name="cloudinaryUploadPreset" type="text" placeholder="Ej: jjgarage_unsigned">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar configuración de Cloudinary</button>
+      </form>
+
+      <form id="password-form" style="max-width:640px;">
+        <h3 style="font-size:1rem; margin-bottom:1rem; color:var(--color-fg);">Cambiar contraseña de acceso</h3>
+        <div class="field">
+          <label for="set-new-password">Nueva contraseña</label>
+          <input id="set-new-password" name="newPassword" type="text" placeholder="Mínimo 4 caracteres" required>
+        </div>
+        <button type="submit" class="btn btn-secondary">Actualizar contraseña</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: FORMULARIO DE AUTO (crear/editar)
+     ============================================================ -->
+<div class="admin-form-overlay" id="car-form-overlay">
+  <div class="admin-form-modal">
+    <button class="admin-close" id="" style="display:none;"></button>
+    <h3 id="car-form-title">Agregar auto</h3>
+    <form id="car-form">
+      <div class="form-row">
+        <div class="field">
+          <label for="car-brand">Marca</label>
+          <input id="car-brand" name="brand" type="text" placeholder="Porsche" required>
+        </div>
+        <div class="field">
+          <label for="car-model">Modelo</label>
+          <input id="car-model" name="model" type="text" placeholder="911 Carrera S" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="car-year">Año</label>
+          <input id="car-year" name="year" type="number" placeholder="2022" required>
+        </div>
+        <div class="field">
+          <label for="car-mileage">Kilometraje</label>
+          <input id="car-mileage" name="mileage" type="text" placeholder="8.200 km">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="car-price">Precio</label>
+          <input id="car-price" name="price" type="number" placeholder="145000" required>
+        </div>
+        <div class="field">
+          <label for="car-currency">Moneda</label>
+          <select id="car-currency" name="currency">
+            <option value="USD">USD</option>
+            <option value="ARS">ARS</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="car-transmission">Transmisión</label>
+          <input id="car-transmission" name="transmission" type="text" placeholder="Automática">
+        </div>
+        <div class="field">
+          <label for="car-fuel">Combustible</label>
+          <input id="car-fuel" name="fuel" type="text" placeholder="Nafta">
+        </div>
+      </div>
+      <div class="field">
+        <label for="car-tag">Etiqueta destacada</label>
+        <input id="car-tag" name="tag" type="text" placeholder="Recién ingresado">
+      </div>
+      <div class="field">
+        <label for="car-description">Descripción</label>
+        <textarea id="car-description" name="description" placeholder="Descripción atractiva del vehículo..."></textarea>
+      </div>
+      <div class="field">
+        <label for="car-image-input">Fotos del vehículo</label>
+        <input id="car-image-input" type="file" accept="image/*" multiple>
+        <div class="image-preview-row" id="car-image-preview"></div>
+      </div>
+      <div class="admin-form-actions">
+        <button type="submit" class="btn btn-primary">Guardar auto</button>
+        <button type="button" class="btn btn-secondary" id="car-form-cancel">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: FORMULARIO DE TESTIMONIO (crear/editar)
+     ============================================================ -->
+<div class="admin-form-overlay" id="testimonial-form-overlay">
+  <div class="admin-form-modal">
+    <h3 id="testimonial-form-title">Agregar testimonio</h3>
+    <form id="testimonial-form">
+      <div class="field">
+        <label for="testimonial-name">Nombre del cliente</label>
+        <input id="testimonial-name" name="name" type="text" placeholder="María González" required>
+      </div>
+      <div class="field">
+        <label for="testimonial-detail">Detalle (ej: "Compró un...")</label>
+        <input id="testimonial-detail" name="detail" type="text" placeholder="Compró un Audi A4">
+      </div>
+      <div class="field">
+        <label>Calificación</label>
+        <div class="stars-input" id="testimonial-stars-input"></div>
+      </div>
+      <div class="field">
+        <label for="testimonial-quote">Comentario</label>
+        <textarea id="testimonial-quote" name="quote" placeholder="Escribí el testimonio..." required></textarea>
+      </div>
+      <div class="admin-form-actions">
+        <button type="submit" class="btn btn-primary">Guardar testimonio</button>
+        <button type="button" class="btn btn-secondary" id="testimonial-form-cancel">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOAST DE CONFIRMACIÓN
+     ============================================================ -->
+<div class="admin-toast" id="admin-toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
+  <span>Cambios guardados</span>
+</div>
+
+<!-- ============================================================
+     SCRIPTS — el orden es importante: store > render > ui > admin
+     ============================================================ -->
+<script src="scripts/store.js"></script>
+<script src="scripts/render.js"></script>
+<script src="scripts/ui.js"></script>
+<script src="scripts/admin.js"></script>
+<script>
+  // Formulario de contacto: en este prototipo solo simula el envío.
+  // Al conectar backend real, reemplazar por un POST a la API/Edge Function correspondiente.
+  document.getElementById('contact-form')?.addEventListener('submit', function (e) {
+    e.preventDefault();
+    document.getElementById('form-success').classList.add('is-visible');
+    this.reset();
+  });
+
+  // Formulario "Vendé tu auto": en este prototipo solo simula el envío.
+  // A FUTURO: reemplazar por un envío real (por ejemplo a una Edge Function de Supabase,
+  // un endpoint propio, o un servicio como Resend/EmailJS) que tome estos mismos campos
+  // (vehicle, year, km, description, images) y los mande por correo a JJGarage.
+  document.getElementById('sell-form')?.addEventListener('submit', function (e) {
+    e.preventDefault();
+    document.getElementById('sell-form-success').classList.add('is-visible');
+    this.reset();
+  });
+</script>
+</body>
+</html>
